@@ -1,0 +1,23 @@
+<?php
+
+$cep = $_GET['cep'];
+echo "$cep<p></p>";
+
+$url = "https://apps.widenet.com.br/busca-cep/api/cep.json?code=$cep";
+echo "$url<p>";
+
+$ch = curl_init($url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$dados = json_decode(curl_exec($ch));
+
+if (!empty($dados->code)){
+    echo "<form>
+    CEP:<input type='text' name='cep' value=\"$dados->code\"><p>
+    Estado:<input type='text' name='estado' value=\"$dados->state\"><p>
+    CIDADE:<input type='text' name='cidade' value=\"$dados->city\"><p>
+    BAIRRO:<input type='text' name='bairro' value=\"$dados->district\"><p>
+    ENDEREÇO:<input type='text' name='endereco' value=\"$dados->address\"><p>
+    </form>";
+}else{
+    echo "CEP não encontrado";
+}
